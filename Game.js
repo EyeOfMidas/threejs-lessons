@@ -23,6 +23,7 @@ export class Game {
 		document.body.appendChild(this.renderer.domElement);
 		window.addEventListener('resize', this.resize.bind(this))
 		window.addEventListener('mousemove', this.onMouseMove.bind(this))
+		window.addEventListener('keyup', this.onKeyUp.bind(this))
 		this.lastTime = 0
 
 		this.tweenManager = new TweenManager()
@@ -78,7 +79,7 @@ export class Game {
 		// 	}))
 		// }))
 		// }, 1000)
-		// this.spinClock.start()
+		this.spinClock.stop()
 	}
 
 	animationLoop(time) {
@@ -99,7 +100,7 @@ export class Game {
 		// this.camera.position.z = 4 * Math.sin(Math.PI * this.cursor.x)
 		// this.camera.position.y = 2 * Math.sin(Math.PI * this.cursor.y)
 
-		// this.group.rotation.y = this.spinClock.getElapsedTime()
+		this.group.rotation.y = this.spinClock.getElapsedTime()
 
 		// this.camera.lookAt(this.axesHelper.position)
 		this.controls.update()
@@ -123,5 +124,17 @@ export class Game {
 	onMouseMove(event) {
 		// this.cursor.x = event.clientX / this.windowSize.width - 0.5
 		// this.cursor.y = event.clientY / this.windowSize.height - 0.5
+	}
+
+	onKeyUp(event) {
+		switch (event.code) {
+			case "KeyS":
+				if (this.spinClock.running) {
+					this.spinClock.stop()
+				} else {
+					this.spinClock.start()
+				}
+				break
+		}
 	}
 }
