@@ -138,33 +138,20 @@ export class Game {
 				}
 				break
 			case "KeyF":
-				if (!document.fullscreenElement) {
-					this.renderer.domElement.requestFullscreen()
+				if (!window.getFullscreenElement()) {
+					window.requestFullscreen(this.renderer.domElement)
 				} else {
-					document.exitFullscreen()
+					window.exitFullscreen()
 				}
 				break
 		}
 	}
 
 	onDoubleClick(event) {
-		const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
-		if (!fullscreenElement) {
-			if (this.renderer.domElement.requestFullscreen) {
-				this.renderer.domElement.requestFullscreen()
-			} else {
-				if (this.renderer.domElement.webkitRequestFullscreen) {
-					this.renderer.domElement.webkitRequestFullscreen()
-				}
-			}
+		if (!window.getFullscreenElement()) {
+			window.requestFullscreen(this.renderer.domElement)
 		} else {
-			if (document.exitFullscreen) {
-				document.exitFullscreen()
-			} else {
-				if (document.webkitExitFullscreen) {
-					document.webkitExitFullscreen()
-				}
-			}
+			window.exitFullscreen()
 		}
 
 	}
