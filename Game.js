@@ -17,6 +17,7 @@ export class Game {
 		this.renderer = new THREE.WebGLRenderer({
 			alpha: true,
 		})
+		this.renderer.setPixelRatio(window.devicePixelRatio)
 
 		this.renderer.setSize(this.windowSize.width, this.windowSize.height)
 		this.renderer.setAnimationLoop(this.animationLoop.bind(this));
@@ -24,6 +25,7 @@ export class Game {
 		window.addEventListener('resize', this.resize.bind(this))
 		window.addEventListener('mousemove', this.onMouseMove.bind(this))
 		window.addEventListener('keyup', this.onKeyUp.bind(this))
+		window.addEventListener('dblclick', this.onDoubleClick.bind(this))
 		this.lastTime = 0
 
 		this.tweenManager = new TweenManager()
@@ -38,13 +40,13 @@ export class Game {
 
 		const cube1 = new THREE.Mesh(
 			new THREE.BoxGeometry(1, 1, 1),
-			new THREE.MeshBasicMaterial({ color: 'crimson' })
+			new THREE.MeshBasicMaterial({ color: 'lime' })
 		)
 		cube1.position.set(-1.5, 0, 0)
 
 		const cube2 = new THREE.Mesh(
 			new THREE.BoxGeometry(1, 1, 1),
-			new THREE.MeshBasicMaterial({ color: 'lime' })
+			new THREE.MeshBasicMaterial({ color: 'crimson' })
 		)
 		cube2.position.set(0, 0, 0)
 
@@ -135,6 +137,35 @@ export class Game {
 					this.spinClock.start()
 				}
 				break
+			case "KeyF":
+				if (!document.fullscreenElement) {
+					this.renderer.domElement.requestFullscreen()
+				} else {
+					document.exitFullscreen()
+				}
+				break
 		}
+	}
+
+	onDoubleClick(event) {
+		const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+		if (!fullscreenElement) {
+			if (this.renderer.domElement.requestFullscreen) {
+				this.renderer.domElement.requestFullscreen()
+			} else {
+				if (this.renderer.domElement.webkitRequestFullscreen) {
+					this.renderer.domElement.webkitRequestFullscreen()
+				}
+			}
+		} else {
+			if (document.exitFullscreen) {
+				document.exitFullscreen()
+			} else {
+				if (document.webkitExitFullscreen) {
+					document.webkitExitFullscreen()
+				}
+			}
+		}
+
 	}
 }
